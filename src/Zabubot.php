@@ -28,7 +28,7 @@ class Zabubot
                 $r = $this->sendMessage($run->message);
                 break;
             case ScheduleItem::TYPE_PHOTO:
-                $filename = __DIR__ . DIRECTORY_SEPARATOR . trim($run->filename, DIRECTORY_SEPARATOR);
+                $filename = __DIR__ . DIRECTORY_SEPARATOR . ".."  . DIRECTORY_SEPARATOR . trim($run->filename, DIRECTORY_SEPARATOR);
                 $r = $this->sendPhoto($filename, $run->caption);
                 break;
         }
