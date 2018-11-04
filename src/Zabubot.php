@@ -20,7 +20,6 @@ class Zabubot
         $run = $schedule->getSchedule();
 
         if (empty($run)) {
-            echo "empty schedule" . PHP_EOL;
             return;
         }
 
