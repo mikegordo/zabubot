@@ -23,7 +23,7 @@ class Zabubot
             return;
         }
 
-        switch ($run['type']) {
+        switch ($run->type) {
             case ScheduleItem::TYPE_MESSAGE:
                 $r = $this->sendMessage($run->message);
                 break;
