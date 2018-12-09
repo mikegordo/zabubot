@@ -6,6 +6,7 @@ class ScheduleItem
 {
     const TYPE_MESSAGE = "message";
     const TYPE_PHOTO = "photo";
+    const TYPE_VIDEO = "video";
 
     public $type;
     public $message;
@@ -25,6 +26,10 @@ class ScheduleItem
                 $this->message = implode(PHP_EOL, $set);
                 break;
             case static::TYPE_PHOTO:
+                $this->filename = $set[0];
+                $this->caption = $set[1] ?? "";
+                break;
+            case static::TYPE_VIDEO:
                 $this->filename = $set[0];
                 $this->caption = $set[1] ?? "";
                 break;

@@ -31,6 +31,10 @@ class Zabubot
                 $filename = __DIR__ . DIRECTORY_SEPARATOR . ".."  . DIRECTORY_SEPARATOR . trim($run->filename, DIRECTORY_SEPARATOR);
                 $r = $this->sendPhoto($filename, $run->caption);
                 break;
+            case ScheduleItem::TYPE_VIDEO:
+                $filename = __DIR__ . DIRECTORY_SEPARATOR . ".."  . DIRECTORY_SEPARATOR . trim($run->filename, DIRECTORY_SEPARATOR);
+                $r = $this->sendVideo($filename, $run->caption);
+                break;
         }
 
         if (is_array($r)) {
@@ -48,8 +52,8 @@ class Zabubot
             "chat_id={$this->channel}",
             "text={$text}",
             "parse_mode=html",
-            "disable_web_page_preview=true",
-            "disable_notification=true",
+            // "disable_web_page_preview=true",
+            // "disable_notification=true",
         ];
 
         $response = file_get_contents($this->url . "/sendMessage?" . implode("&", $request));
@@ -63,7 +67,7 @@ class Zabubot
         $request = [
             "photo" => $photo,
             "caption" => $caption,
-            "disable_notification" => true
+            // "disable_notification" => true
         ];
 
         $ch = curl_init();
@@ -71,6 +75,28 @@ class Zabubot
             "Content-Type:multipart/form-data"
         ));
         curl_setopt($ch, CURLOPT_URL, $this->url . "/sendPhoto?chat_id={$this->channel}");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
+        $response = curl_exec($ch);
+
+        return $this->parseResponse($response);
+    }
+
+    protected function sendVideo($filename, $caption)
+    {
+        $video = new \CURLFile(realpath($filename));
+
+        $request = [
+            "video" => $video,
+            "caption" => $caption,
+            // "disable_notification" => true
+        ];
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            "Content-Type:multipart/form-data"
+        ));
+        curl_setopt($ch, CURLOPT_URL, $this->url . "/sendVideo?chat_id={$this->channel}");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
         $response = curl_exec($ch);

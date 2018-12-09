@@ -51,7 +51,7 @@ class Schedule
                 if (strlen($line) > 0 && $line[0] == ';') {
                     break;
                 }
-                if (empty($type) && in_array($line, [ScheduleItem::TYPE_PHOTO, ScheduleItem::TYPE_MESSAGE])) {
+                if (empty($type) && in_array($line, [ScheduleItem::TYPE_PHOTO, ScheduleItem::TYPE_MESSAGE, ScheduleItem::TYPE_VIDEO])) {
                     $type = $line;
                     continue;
                 }
@@ -73,6 +73,10 @@ class Schedule
 
         if ($type == ScheduleItem::TYPE_PHOTO && (count($set) < 1 || count($set) > 2)) {
             throw new \Exception("Photo type has incorrect number of parameters");
+        }
+
+        if ($type == ScheduleItem::TYPE_VIDEO && (count($set) < 1 || count($set) > 2)) {
+            throw new \Exception("Video type has incorrect number of parameters");
         }
 
         return new ScheduleItem($type, $set);
