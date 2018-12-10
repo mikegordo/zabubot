@@ -1,5 +1,6 @@
 .idea
 *.jpg
+*.mp4
 config.ini
 schedule.html
 log.log
